@@ -22,6 +22,4 @@ mix.styles([
         'resources/vendor/js/demo.js'
     ], 'public/js/plantilla.js')
     .copy('resources/vendor/fontawesome/webfonts', 'public/webfonts')
-    .copy('resources/vendor/img', 'public/img')
-
-    .browserSync('http://maininproject.test/');
+    .copy('resources/vendor/img', 'public/img');
