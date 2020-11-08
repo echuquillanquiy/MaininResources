@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/administracion/usuario/getListUsuarios', 'Administracion\UsersController@getListUsuarios');
+Route::post('/administracion/usuario/setRegistrarUsuario', 'Administracion\UsersController@setRegistrarUsuario');
+Route::post('/archivo/setRegistrarArchivo', 'FilesController@setRegistrarArchivo');
+
 Route::get('/{optional?}', function () {
     return view('app');
-})->name('basepath');
-
-
-Route::get('/administracion/usuario/getListUsuarios', 'Administracion\UsersController@getListUsuarios');
+})->name('basepath')
+->where('optional', '.*');

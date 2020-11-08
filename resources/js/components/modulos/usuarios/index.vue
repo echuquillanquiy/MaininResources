@@ -14,7 +14,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info btn-sm" :to="'/'">
+            <router-link class="btn btn-info btn-sm" :to="'/usuarios/crear'">
               <i class="fa fa-plus-square"></i> Nuevo Usuario
             </router-link>
           </div>
@@ -82,7 +82,7 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListUsuarios">Buscar</button>
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="getListUsuarios" v-loading.fullscreen.lock="fullscreenLoading">Buscar</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriteriosBsq">Limpiar</button>
                   </div>
                 </div>
@@ -193,6 +193,7 @@ export default {
         {value: 'A', label: 'Activo'},
         {value: 'I', label: 'Inactivo'}
       ],
+      fullscreenLoading: false,
       pageNumber: 0,
       perPage: 5
     }
@@ -234,6 +235,7 @@ export default {
       this.listUsuarios = [];
     },
     getListUsuarios() {
+      this.fullscreenLoading = true;
       var url = '/administracion/usuario/getListUsuarios'
       axios.get(url, {
         params: {
@@ -243,8 +245,9 @@ export default {
           'cEstado'   : this.fillBsqUsuario.cEstado
         }
       }).then(response => {
-        console.log(response.data);
+        this.inicializarPaginacion();
         this.listUsuarios = response.data;
+        this.fullscreenLoading = false;
       })
     },
     nextPage() {
@@ -257,6 +260,9 @@ export default {
     },
     selectPage(page) {
       this.pageNumber = page;
+    },
+    inicializarPaginacion() {
+      this.pageNumber = 0;
     }
   }
 }

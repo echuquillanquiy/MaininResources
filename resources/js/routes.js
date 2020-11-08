@@ -11,7 +11,10 @@ export default new Router({
         { path: '/categorias', component: require('./components/modulos/categorias/index').default },
         { path: '/montos', component: require('./components/modulos/montos/index').default },
         { path: '/areas', component: require('./components/modulos/areas/index').default },
+
         { path: '/usuarios', component: require('./components/modulos/usuarios/index').default },
+        { path: '/usuarios/crear', component: require('./components/modulos/usuarios/create').default },
+        
         { path: '/permiso', component: require('./components/modulos/permiso/index').default },
         { path: '/rol', component: require('./components/modulos/rol/index').default },
         { path: '/reporte', component: require('./components/modulos/reporte/index').default },
@@ -20,5 +23,6 @@ export default new Router({
         { path: '/capacitaciones', component: require('./components/modulos/colaboradores/capacitaciones/index').default },
         { path: '/dmedicos', component: require('./components/modulos/colaboradores/dmedicos/index').default },
     ],
-    mode: 'history'
+    mode: 'history',
+    linkActiveClass: 'active'
 })
