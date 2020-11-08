@@ -22,7 +22,7 @@ class UsersController extends Controller
         $cCorreo    = ($cCorreo == Null) ? ($cCorreo = '') : $cCorreo;
         $cEstado    = ($cEstado == Null) ? ($cEstado = '') : $cEstado;
 
-        $rpta = DB::select('call sp_Usuario_getListUsuarios (?, ? , ?, ?)', [
+        $rpta = DB::select('exec sp_Usuario_getListUsuarios (?, ? , ?, ?)', [
             $cNombre, $cUsuario, $cCorreo, $cEstado
         ]);
         return $rpta;
