@@ -34,7 +34,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Nombre</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillBsqUsuario.cNombre">
+                          <input type="text" class="form-control" v-model="fillBsqUsuario.cNombre" @keyup.enter="getListUsuarios">
                         </div>
                       </div>
                     </div>
@@ -43,7 +43,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Usuario</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillBsqUsuario.cUsuario">
+                          <input type="text" class="form-control" v-model="fillBsqUsuario.cUsuario" @keyup.enter="getListUsuarios">
                         </div>
                       </div>
                     </div>
@@ -52,7 +52,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Correo electronico</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillBsqUsuario.cCorreo">
+                          <input type="text" class="form-control" v-model="fillBsqUsuario.cCorreo" @keyup.enter="getListUsuarios">
                         </div>
                       </div>
                     </div>
@@ -68,7 +68,8 @@
                               v-for="item in listEstados"
                               :key="item.value"
                               :label="item.label"
-                              :value="item.value">
+                              :value="item.value"
+                              >
                             </el-option>
                           </el-select>
                         </div>
@@ -92,7 +93,8 @@
                   <h3 class="card-title">Bandeja de resultados</h3>
                 </div>
                   <div class="card-body table-responsive">
-                    <table class="table table-hover table-head-fixed text-nowrap projects text-center">
+                    <template v-if="listarUsuariosPaginated.length">
+                      <table class="table table-hover table-head-fixed text-nowrap projects text-center">
                       <thead>
                         <tr>
                           <th>Fotografía</th>
@@ -104,15 +106,23 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
+                        <tr v-for="(item, index) in listarUsuariosPaginated" :key="index">
                           <td>
-                            <img src="" alt="">
+                            <li class="user-block">
+                              <img src="/img/avatar.png" :alt="item.username" class="profile-avatar-img img-fluid img-circle">
+                            </li>
                           </td>
-                          <td>Eduardo Chuquillanqui</td>
-                          <td>echuquillanquiy@gmail.com</td>
-                          <td>echuquillanquiy</td>
+                          <td v-text="item.fullname"></td>
+                          <td v-text="item.email"></td>
+                          <td v-text="item.username"></td>
                           <td>
-                            <span class="badge badge-success">Activo</span>
+                            <template v-if="item.state == 'A'">
+                              <span class="badge badge-success" v-text="item.state_alias"></span>
+                            </template>
+
+                            <template v-else>
+                              <span class="badge badge-danger" v-text="item.state_alias"></span>
+                            </template>
                           </td>
                           <td>
                             <router-link class="btn btn-primary btn-sm" :to="'/'">
@@ -134,20 +144,29 @@
 
                         </tr>
                       </tbody>
-                    </table>
-                    <div class="card-footer clearfix">
-                      <ul class="pagination pagination-sm m-0 float-right">
-                        <li class="page-item">
-                          <a href="#" class="page-link">Anterior</a>
-                        </li>
-                        <li class="page-item active">
-                          <a href="#" class="page-link">1</a>
-                        </li>
-                        <li class="page-item">
-                          <a href="#" class="page-link">Posterior</a>
-                        </li>
-                      </ul>
-                    </div>
+                      </table>
+                      <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-left">
+                          <li class="page-item" v-if="pageNumber > 0">
+                            <a href="#" class="page-link" @click.prevent="prevPage">Anterior</a>
+                          </li>
+                          <li class="page-item" 
+                          v-for="(page, index) in pagesList" :key="index"
+                          :class="[page == pageNumber ? 'active' : '']">
+                            <a href="#" class="page-link" @click.prevent="selectPage(page)">{{ page + 1 }}</a>
+                          </li>
+                          <li class="page-item" v-if="pageNumber < pageCount - 1">
+                            <a href="#" class="page-link" @click.prevent="nextPage">Posterior</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </template>
+
+                    <template v-else>
+                      <div class="callout callout-info">
+                        <h5>No se encontraron resultados...</h5>
+                      </div>
+                    </template>
                   </div>
               </div>
             </div>
@@ -173,7 +192,35 @@ export default {
       listEstados: [
         {value: 'A', label: 'Activo'},
         {value: 'I', label: 'Inactivo'}
-      ]
+      ],
+      pageNumber: 0,
+      perPage: 5
+    }
+  },
+
+  computed: {
+    pageCount() {
+      let a = this.listUsuarios.length,
+          b = this.perPage;
+      return Math.ceil(a / b);
+    },
+    listarUsuariosPaginated() {
+      let inicio = this.pageNumber * this.perPage,
+          fin = inicio + this.perPage;
+      return this.listUsuarios.slice(inicio, fin);
+    },
+    pagesList() {
+      let a = this.listUsuarios.length,
+          b = this.perPage;
+      let pageCount =  Math.ceil(a / b);
+      let count = 0,
+          pagesArray = [];
+
+          while (count < pageCount) {
+            pagesArray.push(count);
+            count++;
+          }
+          return pagesArray;
     }
   },
   methods: {
@@ -196,8 +243,20 @@ export default {
           'cEstado'   : this.fillBsqUsuario.cEstado
         }
       }).then(response => {
-        console.log(response.data)
+        console.log(response.data);
+        this.listUsuarios = response.data;
       })
+    },
+    nextPage() {
+      this.pageNumber++;
+
+    },
+    prevPage() {
+      this.pageNumber--;
+      
+    },
+    selectPage(page) {
+      this.pageNumber = page;
     }
   }
 }
