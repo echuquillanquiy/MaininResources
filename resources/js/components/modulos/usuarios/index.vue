@@ -144,15 +144,15 @@
                               <router-link class="btn btn-flat btn-success btn-sm" :to="'/'">
                                 <i class="fas fa-key"></i> Permiso
                               </router-link>
-                              <router-link class="btn btn-flat btn-danger btn-sm" :to="'/'">
+                              <button class="btn btn-flat btn-danger btn-sm" @click.prevent="setCambiarEstadoUsuario(1, item.id)">
                                 <i class="fas fa-lock"></i> Desactivar
-                              </router-link>
+                              </button>
                             </template>
 
                             <template v-else>
-                              <router-link class="btn btn-flat btn-success btn-sm" :to="'/'">
+                              <button class="btn btn-flat btn-success btn-sm"  @click.prevent="setCambiarEstadoUsuario(2, item.id)">
                                 <i class="fas fa-lock-open"></i> Activar
-                              </router-link>
+                              </button>
                             </template>
                           </td>
 
@@ -277,6 +277,33 @@ export default {
     },
     inicializarPaginacion() {
       this.pageNumber = 0;
+    },
+    setCambiarEstadoUsuario(op, id){
+      Swal.fire({
+        title: '¿Está seguro de ' + ((op == 1) ? 'desactivar' : 'activar') + ' El usuario?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText:  ((op == 1) ? 'Si, desactivar' : 'Si, activar')
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.fullscreenLoading = true;
+          var url = '/administracion/usuario/setCambiarEstadoUsuario'
+          axios.post(url, {
+            'nIdUsuario' : id,
+            'cEstado' : (op == 1) ? 'I' : 'A'
+          }).then(response => {
+            Swal.fire({
+              icon: 'success',
+              title: ((op == 1) ? 'desactivo' : 'activo') + ' el usuario',
+              showConfirmButton: '',
+              timer: 1500
+            })
+            this.getListUsuarios();
+          })
+        }
+      })
     }
   }
 }
