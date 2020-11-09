@@ -14,6 +14,12 @@ export default new Router({
 
         { path: '/usuarios', component: require('./components/modulos/usuarios/index').default },
         { path: '/usuarios/crear', component: require('./components/modulos/usuarios/create').default },
+        { 
+            path: '/usuarios/editar/:id',
+            name: 'usuarios.editar',
+            component: require('./components/modulos/usuarios/edit').default,
+            props: true
+        },
         
         { path: '/permiso', component: require('./components/modulos/permiso/index').default },
         { path: '/rol', component: require('./components/modulos/rol/index').default },

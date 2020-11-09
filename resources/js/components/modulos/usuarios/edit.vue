@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h4 class="m-0 text-dark"> Crear Usuarios</h4>
+            <h4 class="m-0 text-dark"> Editar Usuario</h4>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Formulario Registro de Usuario</h3>
+                <h3 class="card-title">Formulario Editar Usuario</h3>
               </div>
 
               <div class="card-body">
@@ -35,7 +35,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Nombres</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillCrearUsuario.cNombres" @keyup.enter="setRegistrarUsuario">
+                          <input type="text" class="form-control" v-model="fillEditUsuario.cNombres" @keyup.enter="setEditarUsuario">
                         </div>
                       </div>
                     </div>
@@ -44,7 +44,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Apellidos</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillCrearUsuario.cApellidos" @keyup.enter="setRegistrarUsuario">
+                          <input type="text" class="form-control" v-model="fillEditUsuario.cApellidos" @keyup.enter="setEditarUsuario">
                         </div>
                       </div>
                     </div>
@@ -53,7 +53,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Usuario</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillCrearUsuario.cUsuario" @keyup.enter="setRegistrarUsuario">
+                          <input type="text" class="form-control" v-model="fillEditUsuario.cUsuario" @keyup.enter="setEditarUsuario">
                         </div>
                       </div>
                     </div>
@@ -62,7 +62,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Correo Electronico</label>
                         <div class="col-md-9">
-                          <input type="email" class="form-control" v-model="fillCrearUsuario.cCorreo" @keyup.enter="setRegistrarUsuario">
+                          <input type="email" class="form-control" v-model="fillEditUsuario.cCorreo" @keyup.enter="setEditarUsuario">
                         </div>
                       </div>
                     </div>
@@ -71,7 +71,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Contraseña</label>
                         <div class="col-md-9">
-                          <el-input placeholder="Ingrese una contraseña" v-model="fillCrearUsuario.cContrasena" @keyup.enter="setRegistrarUsuario" show-password></el-input>
+                          <el-input placeholder="Ingrese una contraseña" v-model="fillEditUsuario.cContrasena" @keyup.enter="setEditarUsuario" show-password></el-input>
                         </div>
                       </div>
                     </div>
@@ -92,7 +92,7 @@
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-4 offset-4">
-                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarUsuario" v-loading.fullscreen.lock="fullscreenLoading">Registrar</button>
+                    <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarUsuario" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
                     <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                   </div>
                 </div>
@@ -129,7 +129,8 @@
 export default {
   data() {
     return {
-      fillCrearUsuario: {
+      fillEditUsuario: {
+        nIdUsuario: this.$attrs.id,
         cNombres: '',
         cApellidos: '',
         cUsuario: '',
@@ -152,17 +153,36 @@ export default {
     }
   },
 
-  computed: {
-
+  mounted() {
+      this.getUsuarioById();
   },
   methods: {
+
+      getUsuarioById(){
+            this.fullscreenLoading = true;
+            var url = '/administracion/usuario/getListUsuarios'
+            axios.get(url, {
+                params: {
+                    'nIdUsuario': this.fillEditUsuario.nIdUsuario,
+                
+                }
+            }).then(response => {
+                console.log(response);
+                this.fillEditUsuario.cNombres = response.data[0].firstname;
+                this.fillEditUsuario.cApellidos = response.data[0].lastname;
+                this.fillEditUsuario.cUsuario = response.data[0].username;
+                this.fillEditUsuario.cCorreo = response.data[0].email;
+                this.fullscreenLoading = false;
+            })
+      },
+
       limpiarCriterios(){
-          this.fillCrearUsuario.cNombres = '';
-          this.fillCrearUsuario.cApellidos = '';
-          this.fillCrearUsuario.cUsuario = '';
-          this.fillCrearUsuario.cCorreo = '';
-          this.fillCrearUsuario.cContrasena    = '';
-          this.fillCrearUsuario.oFotografia    = '';
+          this.fillEditUsuario.cNombres = '';
+          this.fillEditUsuario.cApellidos = '';
+          this.fillEditUsuario.cUsuario = '';
+          this.fillEditUsuario.cCorreo = '';
+          this.fillEditUsuario.cContrasena    = '';
+          this.fillEditUsuario.oFotografia    = '';
       },
 
       abrirModal(){
@@ -170,10 +190,10 @@ export default {
       },
 
       getFile(e) {
-          this.fillCrearUsuario.oFotografia = e.target.files[0];
+          this.fillEditUsuario.oFotografia = e.target.files[0];
       },
 
-      setRegistrarUsuario() {
+      setEditarUsuario() {
           if (this.validarRegistrarUsuario()) {
               this.modalShow = true;
               return;
@@ -181,14 +201,14 @@ export default {
 
           this.fullscreenLoading = true;
 
-          if (!this.fillCrearUsuario.oFotografia || this.fillCrearUsuario.oFotografia == undefined) {
+          if (!this.fillEditUsuario.oFotografia || this.fillEditUsuario.oFotografia == undefined) {
               this.setGuardarUsuario(0);
           } else {
               this.setRegistrarArchivo();
           }
       },
       setRegistrarArchivo() {
-          this.form.append('file', this.fillCrearUsuario.oFotografia)
+          this.form.append('file', this.fillEditUsuario.oFotografia)
           const config = { header: { 'Content-Type': 'multipart/form-data' } };
           var url ='/archivo/setRegistrarArchivo'
           axios.post(url, this.form, config).then(response => {
@@ -199,18 +219,23 @@ export default {
       },
 
       setGuardarUsuario(nIdFile){
-          var url = '/administracion/usuario/setRegistrarUsuario'
+          var url = '/administracion/usuario/setEditarUsuario'
           axios.post(url,{
-              'cNombres' : this.fillCrearUsuario.cNombres,
-              'cApellidos' : this.fillCrearUsuario.cApellidos,
-              'cUsuario' : this.fillCrearUsuario.cUsuario,
-              'cCorreo' : this.fillCrearUsuario.cCorreo,
-              'cContrasena'   : this.fillCrearUsuario.cContrasena,
+              'nIdUsuario' : this.fillEditUsuario.nIdUsuario,
+              'cNombres' : this.fillEditUsuario.cNombres,
+              'cApellidos' : this.fillEditUsuario.cApellidos,
+              'cUsuario' : this.fillEditUsuario.cUsuario,
+              'cCorreo' : this.fillEditUsuario.cCorreo,
+              'cContrasena'   : this.fillEditUsuario.cContrasena,
               'oFotografia' : nIdFile,
           }).then(response => {
-              console.log("Registro de Usuario Exitoso");
               this.fullscreenLoading = false;
-              this.$router.push('/usuarios');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Se actualizo el usuario correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
           });
       },
 
@@ -218,20 +243,17 @@ export default {
           this.error = 0;
           this.mensajeError = [];
 
-          if(!this.fillCrearUsuario.cNombres){
+          if(!this.fillEditUsuario.cNombres){
               this.mensajeError.push("El nombre es obligatorio");
           }
-          if(!this.fillCrearUsuario.cApellidos){
+          if(!this.fillEditUsuario.cApellidos){
               this.mensajeError.push("El Apellido es obligatorio");
           }
-          if(!this.fillCrearUsuario.cUsuario){
+          if(!this.fillEditUsuario.cUsuario){
               this.mensajeError.push("El nombre de Usuario es obligatorio");
           }
-          if(!this.fillCrearUsuario.cCorreo){
+          if(!this.fillEditUsuario.cCorreo){
               this.mensajeError.push("El correo electronico es obligatorio");
-          }
-          if(!this.fillCrearUsuario.cContrasena){
-              this.mensajeError.push("La contraseña es obligatoria");
           }
 
           if (this.mensajeError.length) {
