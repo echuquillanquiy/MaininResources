@@ -19,17 +19,17 @@
                         <div class="card-body box-profile">
                             <div class="text-center">
                                 <template v-if="!fillVerUsuario.cRutaArchivo">
-                                    <img src="/img/avatar.png" alt="Foto de usuario" class="profile-user-img img-fluid img-circle">
+                                    <img src="/img/avatar.png" alt="Foto de usuario" class="profile-user-img img-fluid img-circle img-max-height">
                                 </template>
 
                                 <template v-else>
-                                    <img :src="fillVerUsuario.cRutaArchivo" :alt="cNombreCompleto" class="profile-user-img img-fluid img-circle">
+                                    <img :src="fillVerUsuario.cRutaArchivo" :alt="cNombreCompleto" class="profile-user-img img-fluid img-circle img-max-height">
                                 </template>
                             </div>
 
                             <h3 class="profile-username text-center">{{ cNombreCompleto }}</h3>
 
-                            <p class="text-muted text-center">Reclutadora</p>
+                            <p class="text-muted text-center">Reclutador(a)</p>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -62,8 +62,12 @@
                 <div class="col-md-8">
                 <div class="card">
                 <div class="card-header p-2">
-                    <ul class="nav nav-pills">
-                    <li class="nav-item "><a class="nav-link active" href="#settings" data-toggle="tab">Actualizar mis Datos</a></li>
+                    <ul class="nav nav-pills position-reverse">
+                        <li class="nav-item ">
+                            <router-link class="nav-link active" :to="'/usuarios'">
+                                <i class="fas fa-arrow-left"></i> Regresar
+                            </router-link>
+                        </li>
                     </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
@@ -116,9 +120,6 @@
                                 <div class="form group row">
                                     <div class="col-sm-12">
                                         <button class="btn btn-flat btn-info btnFull" @click.prevent="setEditarUsuario" change="getFile" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
-                                        <router-link class="btn btn-danger btnFull mt-1" :to="'/usuarios'">
-                                            <i class="fa fa-arrow-left"></i> Regresar
-                                        </router-link>
                                     </div>
                                 </div>
 
@@ -314,5 +315,10 @@ export default {
 </script>
 
 <style>
-
+    .position-reverse{
+        flex-direction: row-reverse;
+    }
+    .img-max-height{
+        max-height: 100px !important;
+    }
 </style>
