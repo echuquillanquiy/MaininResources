@@ -38,7 +38,7 @@
                     <!-- About Me Box -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">About Me</h3>
+                            <h3 class="card-title">Sobre mí</h3>
                         </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -63,7 +63,7 @@
                 <div class="card">
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Settings</a></li>
+                    <li class="nav-item "><a class="nav-link active" href="#settings" data-toggle="tab">Actualizar mis Datos</a></li>
                     </ul>
                 </div><!-- /.card-header -->
                 <div class="card-body">
@@ -115,7 +115,10 @@
 
                                 <div class="form group row">
                                     <div class="col-sm-12">
-                                    <button class="btn btn-flat btn-info btnFull" @click.prevent="setEditarUsuario" change="getFile" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
+                                        <button class="btn btn-flat btn-info btnFull" @click.prevent="setEditarUsuario" change="getFile" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
+                                        <router-link class="btn btn-danger btnFull mt-1" :to="'/usuarios'">
+                                            <i class="fa fa-arrow-left"></i> Regresar
+                                        </router-link>
                                     </div>
                                 </div>
 

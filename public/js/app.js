@@ -4910,6 +4910,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -107800,31 +107803,50 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form group row" }, [
-                        _c("div", { staticClass: "col-sm-12" }, [
-                          _c(
-                            "button",
-                            {
-                              directives: [
-                                {
-                                  name: "loading",
-                                  rawName: "v-loading.fullscreen.lock",
-                                  value: _vm.fullscreenLoading,
-                                  expression: "fullscreenLoading",
-                                  modifiers: { fullscreen: true, lock: true }
+                        _c(
+                          "div",
+                          { staticClass: "col-sm-12" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                directives: [
+                                  {
+                                    name: "loading",
+                                    rawName: "v-loading.fullscreen.lock",
+                                    value: _vm.fullscreenLoading,
+                                    expression: "fullscreenLoading",
+                                    modifiers: { fullscreen: true, lock: true }
+                                  }
+                                ],
+                                staticClass: "btn btn-flat btn-info btnFull",
+                                attrs: { change: "getFile" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.setEditarUsuario($event)
+                                  }
                                 }
-                              ],
-                              staticClass: "btn btn-flat btn-info btnFull",
-                              attrs: { change: "getFile" },
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.setEditarUsuario($event)
-                                }
-                              }
-                            },
-                            [_vm._v("Editar")]
-                          )
-                        ])
+                              },
+                              [_vm._v("Editar")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "btn btn-danger btnFull mt-1",
+                                attrs: { to: "/usuarios" }
+                              },
+                              [
+                                _c("i", { staticClass: "fa fa-arrow-left" }),
+                                _vm._v(
+                                  " Regresar\n                                      "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
                       ])
                     ])
                   ]
@@ -107911,7 +107933,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("About Me")])
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Sobre mí")])
     ])
   },
   function() {
@@ -107938,14 +107960,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header p-2" }, [
       _c("ul", { staticClass: "nav nav-pills" }, [
-        _c("li", { staticClass: "nav-item" }, [
+        _c("li", { staticClass: "nav-item " }, [
           _c(
             "a",
             {
               staticClass: "nav-link active",
               attrs: { href: "#settings", "data-toggle": "tab" }
             },
-            [_vm._v("Settings")]
+            [_vm._v("Actualizar mis Datos")]
           )
         ])
       ])
