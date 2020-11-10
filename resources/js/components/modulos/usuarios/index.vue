@@ -133,7 +133,7 @@
                             </template>
                           </td>
                           <td>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="'/'">
+                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{ name:'usuarios.ver', params: {id: item.id }}">
                               <i class="fas fa-folder"></i> Ver
                             </router-link>
 

@@ -4746,6 +4746,338 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      fillEditUsuario: {
+        nIdUsuario: this.$attrs.id,
+        cNombres: '',
+        cApellidos: '',
+        cUsuario: '',
+        cCorreo: '',
+        cContrasena: '',
+        oFotografia: ''
+      },
+      fillVerUsuario: {
+        nIdUsuario: this.$attrs.id,
+        cNombres: '',
+        cApellidos: '',
+        cUsuario: '',
+        cCorreo: '',
+        cContrasena: '',
+        oFotografia: '',
+        cRutaArchivo: ''
+      },
+      form: new FormData(),
+      fullscreenLoading: false,
+      modalShow: false,
+      mostrarModal: {
+        display: 'block',
+        background: '#0000006b'
+      },
+      ocultarModal: {
+        display: 'none'
+      },
+      error: 0,
+      mensajeError: []
+    };
+  },
+  mounted: function mounted() {
+    this.getUsuarioById();
+  },
+  computed: {
+    cNombreCompleto: function cNombreCompleto() {
+      return this.fillVerUsuario.cNombres + ' ' + this.fillVerUsuario.cApellidos;
+    }
+  },
+  methods: {
+    getUsuarioById: function getUsuarioById() {
+      var _this = this;
+
+      this.fullscreenLoading = true;
+      var url = '/administracion/usuario/getListUsuarios';
+      axios.get(url, {
+        params: {
+          'nIdUsuario': this.fillEditUsuario.nIdUsuario
+        }
+      }).then(function (response) {
+        _this.getUsuarioEditar(response.data[0]);
+
+        _this.getUsuarioVer(response.data[0]);
+
+        _this.fullscreenLoading = false;
+      });
+    },
+    getUsuarioEditar: function getUsuarioEditar(data) {
+      this.fillEditUsuario.cNombres = data.firstname;
+      this.fillEditUsuario.cApellidos = data.lastname;
+      this.fillEditUsuario.cUsuario = data.username;
+      this.fillEditUsuario.cCorreo = data.email;
+    },
+    getUsuarioVer: function getUsuarioVer(data) {
+      this.fillVerUsuario.cNombres = data.firstname;
+      this.fillVerUsuario.cApellidos = data.lastname;
+      this.fillVerUsuario.cUsuario = data.username;
+      this.fillVerUsuario.cCorreo = data.email;
+      this.fillVerUsuario.cRutaArchivo = data.profile_image;
+    },
+    abrirModal: function abrirModal() {
+      this.modalShow = !this.modalShow;
+    },
+    getFile: function getFile(e) {
+      this.fillEditUsuario.oFotografia = e.target.files[0];
+    },
+    setEditarUsuario: function setEditarUsuario() {
+      if (this.validarRegistrarUsuario()) {
+        this.modalShow = true;
+        return;
+      }
+
+      this.fullscreenLoading = true;
+
+      if (!this.fillEditUsuario.oFotografia || this.fillEditUsuario.oFotografia == undefined) {
+        this.setGuardarUsuario(0);
+      } else {
+        this.setRegistrarArchivo();
+      }
+    },
+    setRegistrarArchivo: function setRegistrarArchivo() {
+      var _this2 = this;
+
+      this.form.append('file', this.fillEditUsuario.oFotografia);
+      var config = {
+        header: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      var url = '/archivo/setRegistrarArchivo';
+      axios.post(url, this.form, config).then(function (response) {
+        console.log(response);
+        var nIdFile = response.data[0].nIdFile;
+
+        _this2.setGuardarUsuario(nIdFile);
+      });
+    },
+    setGuardarUsuario: function setGuardarUsuario(nIdFile) {
+      var _this3 = this;
+
+      var url = '/administracion/usuario/setEditarUsuario';
+      axios.post(url, {
+        'nIdUsuario': this.fillEditUsuario.nIdUsuario,
+        'cNombres': this.fillEditUsuario.cNombres,
+        'cApellidos': this.fillEditUsuario.cApellidos,
+        'cUsuario': this.fillEditUsuario.cUsuario,
+        'cCorreo': this.fillEditUsuario.cCorreo,
+        'cContrasena': this.fillEditUsuario.cContrasena,
+        'oFotografia': nIdFile
+      }).then(function (response) {
+        _this3.fullscreenLoading = false;
+
+        _this3.getUsuarioById();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Se actualizo el usuario correctamente',
+          showConfirmButton: false,
+          timer: 1500
+        });
+      });
+    },
+    validarRegistrarUsuario: function validarRegistrarUsuario() {
+      this.error = 0;
+      this.mensajeError = [];
+
+      if (!this.fillEditUsuario.cNombres) {
+        this.mensajeError.push("El nombre es obligatorio");
+      }
+
+      if (!this.fillEditUsuario.cApellidos) {
+        this.mensajeError.push("El Apellido es obligatorio");
+      }
+
+      if (!this.fillEditUsuario.cUsuario) {
+        this.mensajeError.push("El nombre de Usuario es obligatorio");
+      }
+
+      if (!this.fillEditUsuario.cCorreo) {
+        this.mensajeError.push("El correo electronico es obligatorio");
+      }
+
+      if (this.mensajeError.length) {
+        this.error = 1;
+      }
+
+      return this.error;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/plantilla/Footer.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/plantilla/Footer.vue?vue&type=script&lang=js& ***!
@@ -106825,7 +107157,12 @@ var render = function() {
                                           {
                                             staticClass:
                                               "btn btn-flat btn-primary btn-sm",
-                                            attrs: { to: "/" }
+                                            attrs: {
+                                              to: {
+                                                name: "usuarios.ver",
+                                                params: { id: item.id }
+                                              }
+                                            }
                                           },
                                           [
                                             _c("i", {
@@ -107089,6 +107426,529 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "callout callout-info" }, [
       _c("h5", [_vm._v("No se encontraron resultados...")])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c("div", { staticClass: "container-fluid" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-4" }, [
+          _c("div", { staticClass: "card card-primary card-outline" }, [
+            _c("div", { staticClass: "card-body box-profile" }, [
+              _c(
+                "div",
+                { staticClass: "text-center" },
+                [
+                  !_vm.fillVerUsuario.cRutaArchivo
+                    ? [
+                        _c("img", {
+                          staticClass: "profile-user-img img-fluid img-circle",
+                          attrs: {
+                            src: "/img/avatar.png",
+                            alt: "Foto de usuario"
+                          }
+                        })
+                      ]
+                    : [
+                        _c("img", {
+                          staticClass: "profile-user-img img-fluid img-circle",
+                          attrs: {
+                            src: _vm.fillVerUsuario.cRutaArchivo,
+                            alt: _vm.cNombreCompleto
+                          }
+                        })
+                      ]
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c("h3", { staticClass: "profile-username text-center" }, [
+                _vm._v(_vm._s(_vm.cNombreCompleto))
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "text-muted text-center" }, [
+                _vm._v("Reclutadora")
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card card-primary" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "text-muted",
+                domProps: { textContent: _vm._s(_vm.cNombreCompleto) }
+              }),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _vm._m(3),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "text-muted",
+                domProps: { textContent: _vm._s(_vm.fillVerUsuario.cCorreo) }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-8" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "tab-content" }, [
+                _c(
+                  "div",
+                  { staticClass: "tab-pane active", attrs: { id: "settings" } },
+                  [
+                    _c("form", { staticClass: "form-horizontal" }, [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Nombres")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.fillEditUsuario.cNombres,
+                                expression: "fillEditUsuario.cNombres"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.fillEditUsuario.cNombres },
+                            on: {
+                              keyup: function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.setEditarUsuario($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.fillEditUsuario,
+                                  "cNombres",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Apellidos")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.fillEditUsuario.cApellidos,
+                                expression: "fillEditUsuario.cApellidos"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.fillEditUsuario.cApellidos },
+                            on: {
+                              keyup: function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.setEditarUsuario($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.fillEditUsuario,
+                                  "cApellidos",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Usuario")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.fillEditUsuario.cUsuario,
+                                expression: "fillEditUsuario.cUsuario"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.fillEditUsuario.cUsuario },
+                            on: {
+                              keyup: function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.setEditarUsuario($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.fillEditUsuario,
+                                  "cUsuario",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Correo Electronico")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.fillEditUsuario.cCorreo,
+                                expression: "fillEditUsuario.cCorreo"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "email" },
+                            domProps: { value: _vm.fillEditUsuario.cCorreo },
+                            on: {
+                              keyup: function($event) {
+                                if (
+                                  !$event.type.indexOf("key") &&
+                                  _vm._k(
+                                    $event.keyCode,
+                                    "enter",
+                                    13,
+                                    $event.key,
+                                    "Enter"
+                                  )
+                                ) {
+                                  return null
+                                }
+                                return _vm.setEditarUsuario($event)
+                              },
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.fillEditUsuario,
+                                  "cCorreo",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Contraseña")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-8" },
+                          [
+                            _c("el-input", {
+                              attrs: {
+                                placeholder: "Ingrese una contraseña",
+                                "show-password": ""
+                              },
+                              on: {
+                                keyup: function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "enter",
+                                      13,
+                                      $event.key,
+                                      "Enter"
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  return _vm.setEditarUsuario($event)
+                                }
+                              },
+                              model: {
+                                value: _vm.fillEditUsuario.cContrasena,
+                                callback: function($$v) {
+                                  _vm.$set(
+                                    _vm.fillEditUsuario,
+                                    "cContrasena",
+                                    $$v
+                                  )
+                                },
+                                expression: "fillEditUsuario.cContrasena"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          { staticClass: "col-md-4 col-form-label" },
+                          [_vm._v("Fotografia")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-md-8" }, [
+                          _c("input", {
+                            staticClass: "form-control",
+                            attrs: { type: "file" },
+                            on: { change: _vm.getFile }
+                          })
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form group row" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
+                          _c(
+                            "button",
+                            {
+                              directives: [
+                                {
+                                  name: "loading",
+                                  rawName: "v-loading.fullscreen.lock",
+                                  value: _vm.fullscreenLoading,
+                                  expression: "fullscreenLoading",
+                                  modifiers: { fullscreen: true, lock: true }
+                                }
+                              ],
+                              staticClass: "btn btn-flat btn-info btnFull",
+                              attrs: { change: "getFile" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.setEditarUsuario($event)
+                                }
+                              }
+                            },
+                            [_vm._v("Editar")]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        class: { show: _vm.modalShow },
+        style: _vm.modalShow ? _vm.mostrarModal : _vm.ocultarModal
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c("h5", { staticClass: "modal-title" }, [
+                  _vm._v("Mainin Recursos")
+                ]),
+                _vm._v(" "),
+                _c("button", {
+                  staticClass: "close",
+                  on: { click: _vm.abrirModal }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                _vm._l(_vm.mensajeError, function(item, index) {
+                  return _c("div", {
+                    key: index,
+                    staticClass: "callout callout-danger bg-danger text-white",
+                    staticStyle: { padding: "5px" },
+                    domProps: { textContent: _vm._s(item) }
+                  })
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    on: { click: _vm.abrirModal }
+                  },
+                  [_vm._v("Cerrar")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "content-header" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row mb-2" }, [
+          _c("div", { staticClass: "col-sm-6" }, [
+            _c("h4", { staticClass: "m-0 text-dark" }, [_vm._v("Usuario")])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("About Me")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
+      _c("i", { staticClass: "fas fa-user" }),
+      _vm._v(" Nombre Completo")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
+      _c("i", { staticClass: "fas fa-envelope" }),
+      _vm._v(" Correo Electronico")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header p-2" }, [
+      _c("ul", { staticClass: "nav nav-pills" }, [
+        _c("li", { staticClass: "nav-item" }, [
+          _c(
+            "a",
+            {
+              staticClass: "nav-link active",
+              attrs: { href: "#settings", "data-toggle": "tab" }
+            },
+            [_vm._v("Settings")]
+          )
+        ])
+      ])
     ])
   }
 ]
@@ -124319,6 +125179,76 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/modulos/usuarios/view.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/modulos/usuarios/view.vue ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./view.vue?vue&type=template&id=652519e2& */ "./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2&");
+/* harmony import */ var _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./view.vue?vue&type=script&lang=js& */ "./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/modulos/usuarios/view.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./view.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modulos/usuarios/view.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./view.vue?vue&type=template&id=652519e2& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/modulos/usuarios/view.vue?vue&type=template&id=652519e2&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_view_vue_vue_type_template_id_652519e2___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/plantilla/Footer.vue":
 /*!******************************************************!*\
   !*** ./resources/js/components/plantilla/Footer.vue ***!
@@ -124570,6 +125500,11 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     path: '/usuarios/editar/:id',
     name: 'usuarios.editar',
     component: __webpack_require__(/*! ./components/modulos/usuarios/edit */ "./resources/js/components/modulos/usuarios/edit.vue")["default"],
+    props: true
+  }, {
+    path: '/usuarios/ver/:id',
+    name: 'usuarios.ver',
+    component: __webpack_require__(/*! ./components/modulos/usuarios/view */ "./resources/js/components/modulos/usuarios/view.vue")["default"],
     props: true
   }, {
     path: '/permiso',
