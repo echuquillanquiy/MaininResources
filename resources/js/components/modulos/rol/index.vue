@@ -14,7 +14,7 @@
       <div class="card">
         <div class="card-header">
           <div class="card-tools">
-            <router-link class="btn btn-info btn-sm" :to="'/usuarios/crear'">
+            <router-link class="btn btn-info btn-sm" :to="'/rol/crear'">
               <i class="fa fa-plus-square"></i> Nuevo Rol
             </router-link>
           </div>
@@ -30,11 +30,21 @@
               <div class="card-body">
                 <form role="form">
                   <div class="row">
+
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Nombre</label>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" v-model="fillBsqRol.cNombre" @keyup.enter="getListarRoles">
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-md-6">
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Url Amigable</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillBsqRol.cNombre" @keyup.enter="getListarRoles">
+                          <input type="text" class="form-control" v-model="fillBsqRol.cUrl" @keyup.enter="getListarRoles">
                         </div>
                       </div>
                     </div>
@@ -60,7 +70,7 @@
                       <table class="table table-hover table-head-fixed text-nowrap projects text-center">
                       <thead>
                         <tr>
-                          <th>Fotografía</th>
+                          <th>Nombre</th>
                           <th>Url Amigable</th>
                           <th>Acciones</th>
                         </tr>
@@ -74,7 +84,7 @@
                               <i class="fas fa-folder"></i> Ver
                             </router-link>
 
-                            <router-link class="btn btn-flat btn-info btn-sm" :to="{ name:'usuarios.editar', params: {id: item.id }}">
+                            <router-link class="btn btn-flat btn-warning btn-sm text-white" :to="{ name:'usuarios.editar', params: {id: item.id }}">
                               <i class="fas fa-pencil-alt"></i> Editar
                             </router-link>
                           </td>
