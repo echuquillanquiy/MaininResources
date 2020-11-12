@@ -39,13 +39,6 @@ export default new Router({
             component: require('./components/modulos/rol/edit').default,
             props: true
         },
-
-        { 
-            path: '/rol/ver/:id', 
-            name : 'rol.ver',
-            component: require('./components/modulos/rol/view').default,
-            props: true
-        },
         
         { path: '/reporte', component: require('./components/modulos/reporte/index').default },
 

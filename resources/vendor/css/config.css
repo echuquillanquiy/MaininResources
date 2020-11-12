@@ -29,3 +29,14 @@
     list-style: none;
     
 }
+
+.scrollTable{
+    max-height: 550px !important;
+    overflow: auto !important;
+}
+
+.scrollTable2{
+    max-height: 350px !important;
+    overflow: auto !important;
+  }
+
