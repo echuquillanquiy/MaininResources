@@ -80,11 +80,11 @@
                           <td v-text="item.name"></td>
                           <td v-text="item.slug"></td>
                           <td>
-                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{ name:'usuarios.ver', params: {id: item.id }}">
+                            <router-link class="btn btn-flat btn-primary btn-sm" :to="{ name:'rol.ver', params: {id: item.id }}">
                               <i class="fas fa-folder"></i> Ver
                             </router-link>
 
-                            <router-link class="btn btn-flat btn-warning btn-sm text-white" :to="{ name:'usuarios.editar', params: {id: item.id }}">
+                            <router-link class="btn btn-flat btn-warning btn-sm text-white" :to="{ name:'rol.editar', params: {id: item.id }}">
                               <i class="fas fa-pencil-alt"></i> Editar
                             </router-link>
                           </td>

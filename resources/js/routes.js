@@ -5,6 +5,7 @@ Vue.use(Router)
 
 export default new Router({
     routes:[
+
         { path: '/', component: require('./components/modulos/dashboard/index').default },
         { path: '/puestos', component: require('./components/modulos/puestos/index').default },
         { path: '/empresas', component: require('./components/modulos/empresas/index').default },
@@ -32,6 +33,19 @@ export default new Router({
 
         { path: '/rol', component: require('./components/modulos/rol/index').default },
         { path: '/rol/crear', component: require('./components/modulos/rol/create').default },
+        { 
+            path: '/rol/editar/:id', 
+            name : 'rol.editar',
+            component: require('./components/modulos/rol/edit').default,
+            props: true
+        },
+
+        { 
+            path: '/rol/ver/:id', 
+            name : 'rol.ver',
+            component: require('./components/modulos/rol/view').default,
+            props: true
+        },
         
         { path: '/reporte', component: require('./components/modulos/reporte/index').default },
 

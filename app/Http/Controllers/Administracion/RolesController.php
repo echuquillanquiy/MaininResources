@@ -12,14 +12,16 @@ class RolesController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
 
+        $nIdRol = $request->nIdRol;
         $cNombre = $request->cNombre;
         $cSlug  = $request->cSlug;
 
+        $nIdRol    = ($nIdRol == Null) ? ($nIdRol = 0) : $nIdRol;
         $cNombre    = ($cNombre == Null) ? ($cNombre = '') : $cNombre;
         $cSlug    = ($cSlug == Null) ? ($cSlug = '') : $cSlug;
 
-        $rpta = DB::select('call sp_Rol_getListarRoles (?, ?)', [
-            $cNombre, $cSlug
+        $rpta = DB::select('call sp_Rol_getListarRoles (?, ?, ?)', [
+            $nIdRol, $cNombre, $cSlug
         ]);
         return $rpta;
     }
@@ -28,7 +30,13 @@ class RolesController extends Controller
     {
         if(!$request->ajax()) return redirect('/');
 
-        $rpta = DB::select('call sp_Rol_getListarPermisosByRol');
+        $nIdRol = $request->nIdRol;
+
+        $nIdRol    = ($nIdRol == Null) ? ($nIdRol = 0) : $nIdRol;
+
+        $rpta = DB::select('call sp_Rol_getListarPermisosByRol (?)', [
+            $nIdRol
+        ]);
         return $rpta;
     }
 
@@ -50,6 +58,44 @@ class RolesController extends Controller
             ]);
 
             $nIdRol = $rpta[0]->nIdRol;
+
+            $listPermisos = $request->listPermisosFilter;
+            $listPermisosSize = sizeof($listPermisos);
+
+            if ($listPermisosSize > 0) {
+                foreach ($listPermisos as $key => $value) {
+                    if($value['checked'] == true) {
+                        
+                        DB::select('call sp_Rol_setRegistrarRolPermiso (?, ?)', [
+                            $nIdRol, $value['id']
+                        ]);
+                    }
+                }
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+        }
+    }
+
+    public function setEditarRolPermisos(Request $request)
+    {
+        if(!$request->ajax()) return redirect('/');
+
+        $nIdRol = $request->nIdRol;
+        $cNombre = $request->cNombre;
+        $cSlug  = $request->cSlug;
+
+        $nIdRol    = ($nIdRol == Null) ? ($nIdRol = '') : $nIdRol;
+        $cNombre    = ($cNombre == Null) ? ($cNombre = '') : $cNombre;
+        $cSlug    = ($cSlug == Null) ? ($cSlug = '') : $cSlug;
+
+        try {
+            DB::beginTransaction();
+
+            $rpta = DB::select('call sp_Rol_setEditarRol (?, ?, ?)', [
+                $nIdRol, $cNombre, $cSlug
+            ]);
 
             $listPermisos = $request->listPermisosFilter;
             $listPermisosSize = sizeof($listPermisos);
