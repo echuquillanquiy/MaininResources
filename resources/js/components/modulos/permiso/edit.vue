@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h4 class="m-0 text-dark"> Crear Permiso</h4>
+            <h4 class="m-0 text-dark"> Editar Permiso</h4>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
           <div class="container-fluid">
                 <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Formulario Registrar Permiso</h3>
+                                <h3 class="card-title">Formulario Editar Permiso</h3>
                             </div>
 
                             <div class="card-body">
@@ -35,7 +35,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Nombre</label>
                                             <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="fillCrearPermiso.cNombre" @keyup.enter="setRegistrarPermisos">
+                                            <input type="text" class="form-control" v-model="fillEditarPermiso.cNombre" @keyup.enter="setEditarPermisos">
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +44,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label">Url Amigable</label>
                                             <div class="col-md-9">
-                                            <input type="text" class="form-control" v-model="fillCrearPermiso.cSlug" @keyup.enter="setRegistrarPermisos">
+                                            <input type="text" class="form-control" v-model="fillEditarPermiso.cSlug" @keyup.enter="setEditarPermisos">
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-md-4 offset-4">
-                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setRegistrarPermisos" v-loading.fullscreen.lock="fullscreenLoading">Registrar</button>
+                                        <button class="btn btn-flat btn-info btnWidth" @click.prevent="setEditarPermisos" v-loading.fullscreen.lock="fullscreenLoading">Editar</button>
                                         <button class="btn btn-flat btn-default btnWidth" @click.prevent="limpiarCriterios">Limpiar</button>
                                     </div>
                                 </div>
@@ -93,7 +93,8 @@
 export default {
   data() {
     return {
-      fillCrearPermiso: {
+      fillEditarPermiso: {
+        nIdPermiso: this.$attrs.id,
         cNombre: '',
         cSlug: ''
       },
@@ -114,41 +115,65 @@ export default {
   computed: {
 
   },
+
+  mounted() {
+      this.getListarPermisos();
+  },
   methods: {
+      getListarPermisos() {
+        this.fullscreenLoading = true;
+        var url = '/administracion/permisos/getListarPermisos'
+        axios.get(url, {
+            params: {
+            'nIdPermiso': this.fillEditarPermiso.nIdPermiso,
+            }
+        }).then(response => {
+            //this.inicializarPaginacion();
+            this.fillEditarPermiso.cNombre = response.data[0].name;
+            this.fillEditarPermiso.cSlug = response.data[0].slug;
+            this.fullscreenLoading = false;
+        })
+      },
       limpiarCriterios(){
-          this.fillCrearPermiso.cNombre = '';
-          this.fillCrearPermiso.cSlug = ''
+          this.fillEditarPermiso.cNombre = '';
+          this.fillEditarPermiso.cSlug = ''
       },
 
       abrirModal(){
           this.modalShow = !this.modalShow;
       },
       
-      setRegistrarPermisos(){
-          if (this.validarRegistrarRolPermisos()) {
+      setEditarPermisos(){
+          if (this.validarEditarPermiso()) {
               this.modalShow = true;
               return;
           }
           this.fullscreenLoading = true;
-          var url = '/administracion/permiso/setRegistrarPermisos'
+          var url = '/administracion/permiso/setEditarPermisos'
           axios.post(url,{
-              'cNombre' : this.fillCrearPermiso.cNombre,
-              'cSlug' : this.fillCrearPermiso.cSlug,
+              'nIdPermiso': this.fillEditarPermiso.nIdPermiso,
+              'cNombre' : this.fillEditarPermiso.cNombre,
+              'cSlug' : this.fillEditarPermiso.cSlug,
           }).then(response => {
               console.log("Registro de Usuario Exitoso");
               this.fullscreenLoading = false;
-              this.$router.push('/permiso');
+              Swal.fire({
+                  icon: "success",
+                  title: "Se actualizo permiso correctamente",
+                  showConfirmButton: false,
+                  timer:1500
+              })
           });
       },
 
-      validarRegistrarRolPermisos() {
+      validarEditarPermiso() {
           this.error = 0;
           this.mensajeError = [];
 
-          if(!this.fillCrearPermiso.cNombre){
+          if(!this.fillEditarPermiso.cNombre){
               this.mensajeError.push("El nombre es obligatorio");
           }
-          if(!this.fillCrearPermiso.cSlug){
+          if(!this.fillEditarPermiso.cSlug){
               this.mensajeError.push("La Url Amigable es obligatoria");
           }
 
