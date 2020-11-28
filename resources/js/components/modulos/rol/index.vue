@@ -76,11 +76,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(item, index) in listarRolesPaginated" :key="index" @click.prevent="abrirModalByOption('rol', 'ver', item)">
+                        <tr v-for="(item, index) in listarRolesPaginated" :key="index">
                           <td v-text="item.name"></td>
                           <td v-text="item.slug"></td>
                           <td>
-                            <button class="btn btn-flat btn-info btn-sm">
+                            <button class="btn btn-flat btn-info btn-sm" @click.prevent="abrirModalByOption('rol', 'ver', item)">
                               <i class="fas fa-folder"></i> Ver
                             </button>
 
