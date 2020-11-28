@@ -28,8 +28,6 @@ export default new Router({
             component: require('./components/modulos/usuarios/view').default,
             props: true
         },
-        
-        { path: '/permiso', component: require('./components/modulos/permiso/index').default },
 
         { path: '/rol', component: require('./components/modulos/rol/index').default },
         { path: '/rol/crear', component: require('./components/modulos/rol/create').default },
@@ -39,6 +37,9 @@ export default new Router({
             component: require('./components/modulos/rol/edit').default,
             props: true
         },
+
+        { path: '/permiso', component: require('./components/modulos/permiso/index').default },
+        { path: '/permiso/crear', component: require('./components/modulos/permiso/create').default },
         
         { path: '/reporte', component: require('./components/modulos/reporte/index').default },
 

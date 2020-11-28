@@ -44,7 +44,7 @@
                       <div class="form-group row">
                         <label class="col-md-3 col-form-label">Url Amigable</label>
                         <div class="col-md-9">
-                          <input type="text" class="form-control" v-model="fillBsqRol.cUrl" @keyup.enter="getListarRoles">
+                          <input type="text" class="form-control" v-model="fillBsqRol.cSlug" @keyup.enter="getListarRoles">
                         </div>
                       </div>
                     </div>
@@ -162,7 +162,7 @@
                                   <div class="form-group row">
                                     <label class="col-md-12 col-form-label">Url Amigable</label>
                                     <div class="col-md-12">
-                                      <span class="form-control" v-text="fillVerRol.cUrl"></span>
+                                      <span class="form-control" v-text="fillVerRol.cSlug"></span>
                                     </div>
                                   </div>
                                 </div>
@@ -223,12 +223,12 @@ export default {
     return {
       fillBsqRol: {
         cNombre: '',
-        cUrl: ''
+        cSlug: ''
       },
       listRoles:[],
       fillVerRol: {
         cNombre: '',
-        cUrl: ''
+        cSlug: ''
       },
       listPermisos:[],
       fullscreenLoading: false,
@@ -276,14 +276,14 @@ export default {
   methods: {
     limpiarCriteriosBsq(){
       this.fillBsqRol.cNombre    = '';
-      this.fillBsqRol.cUrl   = '';
+      this.fillBsqRol.cSlug   = '';
     },
     limpiarBandejaRoles() {
       this.listRoles = [];
     },
     limpiarModal(){
       this.fillVerRol.cNombre = '';
-      this.fillVerRol.cUrl = '';
+      this.fillVerRol.cSlug = '';
       this.listPermisos = [];
       this.modalOption = 0;
     },
@@ -308,7 +308,7 @@ export default {
           switch (accion) {
             case 'ver': {
               this.fillVerRol.cNombre = data.name;
-              this.fillVerRol.cUrl = data.slug;
+              this.fillVerRol.cSlug = data.slug;
 
               this.getListarPermisosByRol(data.id)
             }
@@ -322,7 +322,7 @@ export default {
       axios.get(url, {
         params: {
           'cNombre'   : this.fillBsqRol.cNombre,
-          'cUrl'   : this.fillBsqRol.cUrl,
+          'cSlug'   : this.fillBsqRol.cSlug,
         }
       }).then(response => {
         this.inicializarPaginacion();
